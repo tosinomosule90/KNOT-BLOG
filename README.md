@@ -4,7 +4,7 @@ Knot is a clean, responsive, and performance-oriented micro-blogging and social 
 
 ---
 
-## ✨ Features
+##  Features
 
 - **Dynamic Social Feed**: Rich card layouts with smooth hover effects, collapsible comment layers, and interactive liking systems.
 - **Rich Media Handling**: Seamless support for inline custom profile pictures, image uploads, and native HTML5 video rendering (16:9 aspect ratios).
@@ -29,7 +29,7 @@ app/
 ├── static/          # CSS, JS, images, uploaded media
 └── templates/       # HTML templates for pages and layouts
 ```
-## 🛠️ Technology Stack
+##  Technology Stack
 
 - **Backend Architecture**: Python 3.x, Flask (Microframework)
 - **Database Layer**: Flask-SQLAlchemy (ORM), SQLite / PostgreSQL
@@ -97,14 +97,14 @@ Orphan File Prevention: Profile picture swaps automatically clean up old storage
 
 Route Guards: Critical data changes (/update-post/, /update-account) perform continuous identity assertion checks ensuring active sessions strictly match data author records.
 
-Media Upload Paths:
-
-Profile Avatars: app/static/profile_pics/
-
-Feed Uploads (Images): app/static/post_images/
-
-Feed Uploads (Videos): app/static/post_videos/
+## homepage display
 <img width="259" height="579" alt="Annotation 2026-05-20 135156" src="https://github.com/user-attachments/assets/5d62addf-fcc5-49e4-b622-0b9d90345ab9" />
+## update profile display
+<img width="264" height="586" alt="upadate" src="https://github.com/user-attachments/assets/25b00bb9-4f49-4e71-9b63-172436fd43ff" />
+## feeds display
+<img width="276" height="596" alt="feed" src="https://github.com/user-attachments/assets/bf2a024d-7c8e-402c-9fb6-784fed5bb224" />
+## sidebar display
+<img width="276" height="598" alt="sidebar" src="https://github.com/user-attachments/assets/cf066e81-4e35-449a-a3e1-97bff9ade6e6" />
 
 - The database is created automatically when you run `app.py`
 - Uploaded profile pictures are stored in `app/static/profile_pics/`
