@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5 pt-4 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                
+                <div class="card-header bg-primary py-5 text-center position-relative" style="background: linear-gradient(135deg, #0d6efd 0%, #0043a8 100%);">
+                    <div class="position-relative d-inline-block">
+                        <img src="{{ image_file }}" alt="Profile" width="110" height="110" 
+                             class="rounded-circle border border-4 border-white shadow-lg mb-3" 
+                             style="object-fit: cover;">
+                        <div class="position-absolute bottom-0 end-0 bg-white rounded-circle p-2 shadow-sm" style="margin-bottom: 15px;">
+                            <i class="fas fa-camera text-primary small"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-white fw-bold m-0">Account Settings</h3>
+                    <p class="text-white-50 small">Manage your profile and security</p>
+                </div>
+                
+                <div class="card-body p-4 p-md-5">
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-info border-0 shadow-sm alert-dismissible fade show rounded-3" role="alert">
+                                    <i class="fas fa-info-circle me-2"></i> {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-uppercase small text-muted mb-3" style="letter-spacing: 1px;">Public Identity</label>
+                            
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0"><i class="fas fa-user text-muted"></i></span>
+                                    {{ form.username(class="form-control border-0 bg-light py-2 px-3", placeholder="Username") }}
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0"><i class="fas fa-envelope text-muted"></i></span>
+                                    {{ form.email(class="form-control border-0 bg-light py-2 px-3", placeholder="Email Address") }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+    <label class="form-label fw-bold small text-muted"><i class="fas fa-image me-2"></i>Update Profile Picture</label>
+    
+    <label for="picture-upload" class="d-block p-4 rounded-4 bg-light border border-2 border-dashed text-center cursor-pointer hover-bg-light-primary transition-all">
+        <div class="py-2">
+            <i class="fas fa-cloud-upload-alt fa-2x text-primary mb-2"></i>
+            <p class="mb-0 small fw-semibold text-dark" id="file-name-display">Click to upload new image</p>
+            <p class="x-small text-muted mb-0">PNG or JPG (Max. 2MB)</p>
+        </div>
+        
+        {{ form.picture(id="picture-upload", class="d-none", onchange="showPreview(this)") }}
+    </label>
+
+    {% if form.picture.errors %}
+        {% for error in form.picture.errors %}
+            <div class="text-danger x-small mt-1"><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+
+                        <hr class="my-4 opacity-25">
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-uppercase small text-muted mb-3" style="letter-spacing: 1px;">Security & Password</label>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0"><i class="fas fa-key text-muted"></i></span>
+                                        {{ form.change_password(class="form-control border-0 bg-light", placeholder="New Password") }}
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0"><i class="fas fa-shield-alt text-muted"></i></span>
+                                        {{ form.confirm_password(class="form-control border-0 bg-light", placeholder="Confirm") }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-text text-muted x-small mt-2 italic">Keep blank to remain unchanged.</div>
+                        </div>
+
+                        <div class="col-md-6">
+    
+
+                        <div class="d-grid gap-2 pt-3">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold shadow-sm py-3">
+                                Update My Account
+                            </button>
+                            <a href="{{ url_for('company.account') }}" class="btn btn-link text-muted text-decoration-none small">
+                                Go Back
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+function showPreview(input) {
+    if (input.files && input.files[0]) {
+        const fileName = input.files[0].name;
+        document.getElementById('file-name-display').innerText = "Selected: " + fileName;
+    }
+}
+</script>
+
+
+{% endblock %}

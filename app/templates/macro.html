@@ -1,0 +1,70 @@
+{% macro render_search_card(search, endpoint='company.dashboard') %}
+<div class="card border-0 shadow-sm rounded-4 mb-4 knot-search-card">
+    <div class="card-body p-4">
+        <h6 class="fw-bold mb-3">
+            <i class="fas fa-search me-2 text-primary"></i>Find a Post
+        </h6>
+        
+        <form action="{{ url_for(endpoint) }}" method="GET" class="d-flex gap-2">
+            <input type="text" name="search" 
+                   class="form-control border-0 bg-light rounded-pill px-4 shadow-none" 
+                   placeholder="Search keywords" 
+                   value="{{ search if search }}"
+                   autocomplete="off">
+            
+            <button class="btn btn-primary rounded-circle shadow-sm d-flex align-items-center justify-content-center" 
+                    type="submit" 
+                    style="width: 42px; height: 42px; min-width: 42px;">
+                <i class="fas fa-arrow-right fa-sm"></i>
+            </button>
+        </form>
+
+        {% if search %}
+            <div class="mt-3 animate__animated animate__fadeIn">
+                <a href="{{ url_for(endpoint) }}" class="badge rounded-pill bg-light text-muted text-decoration-none py-2 px-3 border">
+                    <i class="fas fa-times-circle me-1 text-danger"></i> 
+                    Showing results for: <strong>{{ search }}</strong>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .knot-search-card .form-control:focus {
+        background-color: #fff !important;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1) !important;
+    }
+</style>
+{% endmacro %}
+
+
+{% macro render_news_ticker(display, moment) %}
+<div class="ticker-wrapper d-flex align-items-center">
+
+          <span class="badge bg-primary me-3">
+            <i class="fas fa-rss me-1"></i>LATEST</span>
+
+          <div class="ticker-content small white-space-nowrap animate-ticker">
+
+            {% for p in display %}
+
+            <span class="me-4 text-light">
+
+              <i class="fas fa-bolt text-warning me-1"></i>
+
+              <strong>{{ p.author.username }}:</strong> {{
+
+              p.content|truncate(50) }}
+
+              <span class="text-muted">({{moment(p.date).calendar() }})</span>
+
+            </span>
+
+            <span class="me-4">|</span>
+
+            {% endfor %}
+
+          </div>
+
+{% endmacro %}

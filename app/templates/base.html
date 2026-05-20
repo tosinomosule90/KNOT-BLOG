@@ -1,0 +1,541 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {%block title%}
+    <title>home page</title>
+    {% endblock %}
+    <script>
+      // Execute immediately to prevent flashing
+      (function () {
+        const savedTheme = localStorage.getItem("theme") || "light";
+        document.documentElement.setAttribute("data-bs-theme", savedTheme);
+      })();
+    </script>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-..."
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/mystyle.css') }}"
+    />
+
+    <!-- Font Awesome icons -->
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha512-..."
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    {{ moment.include_moment() }}
+  </head>
+  {%from 'macro.html' import render_search_card,render_news_ticker%}
+
+  <body>
+    <!-- =========================TICKER POST========================== -->
+    {% block content %}
+    <div class="bg-dark text-white py-2 overflow-hidden shadow-sm mb-4">
+      <div class="container">
+      <div class="ticker-content small animate-ticker">
+    {% for p in display %}
+    <span class="me-4 text-light">
+        <i class="fas fa-bolt text-warning me-1"></i>
+        <strong class="text-primary">{{ p.author.username }}:</strong> 
+        {{ p.content|truncate(50) }}
+        <span class="text-muted">({{ moment(p.date).fromNow() }})</span>
+    </span>
+    <span class="me-4 text-secondary opacity-25">|</span>
+    {% endfor %}
+
+    {% for p in display %}
+    <span class="me-4 text-light" aria-hidden="true">
+        <i class="fas fa-bolt text-warning me-1"></i>
+        <strong>{{ p.author.username }}:</strong> {{ p.content|truncate(50) }}
+        <span class="text-muted">({{ moment(p.date).fromNow() }})</span>
+    </span>
+    <span class="me-4 text-secondary opacity-25" aria-hidden="true">|</span>
+    {% endfor %}
+</div>  
+      </div>
+      </div>
+    </div>
+    <button
+      class="btn btn-light border-0 rounded-circle shadow-sm me-2"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#knotSidebar"
+      aria-controls="knotSidebar"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
+    <!-- ========================================================================= -->
+
+    <!-- =============================SEARCH POST======================================= -->
+    {{ render_search_card(search) }}
+    <!-- ==================================================================================== -->
+
+    <!-- ===============================SIDEBAR MENU============================== -->
+    <div
+      class="offcanvas offcanvas-start border-0 shadow"
+      tabindex="-1"
+      id="knotSidebar"
+      aria-labelledby="knotSidebarLabel"
+      style="width: 300px"
+    >
+      <div class="offcanvas-header bg-primary text-white py-4">
+        <div class="d-flex align-items-center">
+          <div class="logo-wrapper me-2">
+            <div class="dot dot-1 bg-white"></div>
+            <div class="dot dot-2 bg-white"></div>
+            <div class="line bg-white" style="background: white"></div>
+          </div>
+          <h5 class="offcanvas-title fw-bold" id="knotSidebarLabel">
+            KNOT MENU
+          </h5>
+        </div>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="offcanvas-body p-0">
+        <div class="p-4 border-bottom bg-light">
+          <div class="d-flex align-items-center">
+            <img
+              src="{{ image_file }}"
+              class="rounded-circle shadow-sm me-3"
+              width="50"
+              height="50"
+              style="object-fit: cover"
+            />
+            <div>
+              <h6 class="mb-0 fw-bold text-dark">
+                {{ current_user.username }}
+              </h6>
+              <small class="text-muted">Member since 2026</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="list-group list-group-flush">
+          <a
+            href="{{ url_for('company.dashboard') }}"
+            class="list-group-item list-group-item-action py-3 border-0"
+          >
+            <i class="fas fa-home me-3 text-primary"></i> Home Feed
+          </a>
+          <a
+            href="{{ url_for('company.account') }}"
+            class="list-group-item list-group-item-action py-3 border-0"
+          >
+            <i class="fas fa-user-circle me-3 text-primary"></i> My Profile
+          </a>
+
+          <a
+            href="{{ url_for('company.community') }}"
+            class="list-group-item list-group-item-action py-3 border-0"
+          >
+            <i class="fas fa-users me-3 text-primary"></i> Communities
+          </a>
+        </div>
+
+        <div class="p-4 mt-3">
+          <h6
+            class="text-uppercase small fw-bold text-muted mb-3"
+            style="letter-spacing: 1px"
+          >
+            Your Activity
+          </h6>
+          <div class="row g-2 text-center">
+            <div class="col-6">
+              <div class="p-2 bg-light rounded-3">
+                <div class="fw-bold">{{ current_user.posts|length }}</div>
+                <div class="x-small text-muted">Posts</div>
+              </div>
+            </div>
+            <!-- follow input here -->
+          </div>
+        </div>
+      </div>
+
+      <div class="offcanvas-footer p-4 border-top">
+        <a
+          href="{{ url_for('company.logout') }}"
+          class="btn btn-outline-danger w-100 rounded-pill small"
+        >
+          <i class="fas fa-sign-out-alt me-2"></i> Logout
+        </a>
+      </div>
+    </div>
+    <!-- ========================================================================= -->
+
+    <!-- =====================PROFILE SIDEBAR========================= -->
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="sticky-top" style="top: 85px">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+              <div class="card-body text-center p-4">
+                <div class="position-relative d-inline-block mb-3">
+                  <img
+                    src="{{ image_file }}"
+                    alt="Profile"
+                    class="rounded-circle border border-4 border-white shadow-sm"
+                    width="110"
+                    height="110"
+                    style="object-fit: cover"
+                  />
+                </div>
+                <h4 class="fw-bold m-0">{{ current_user.username }}</h4>
+                <p class="text-muted small mb-3">Active Blogger</p>
+                <div class="d-grid gap-2">
+                  <a
+                    href="{{ url_for('company.account') }}"
+                    class="btn btn-outline-primary btn-sm rounded-pill"
+                    >Manage Account</a
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- ========================================================================= -->
+
+            <div class="card border-0 shadow-sm rounded-4">
+              <div class="card-body p-4">
+                <h6 class="fw-bold mb-3">Compose Post</h6>
+                <form action="{{ url_for('company.dashboard') }}" method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            
+            <div class="mb-3">
+                {{ form.content(class='form-control border-0 bg-light rounded-3 shadow-none', 
+                   rows="3", placeholder="What's on your mind?") }}
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex gap-2">
+                    <label for="image_upload" class="btn btn-light btn-sm rounded-pill px-3 text-muted border">
+                        <i class="fas fa-image text-success me-1"></i> Photo
+                        {{ form.image(id="image_upload", class="d-none", onchange="updateFileName(this, 'img-label')") }}
+                    </label>
+                    
+                    <label for="video_upload" class="btn btn-light btn-sm rounded-pill px-3 text-muted border">
+                        <i class="fas fa-video text-danger me-1"></i> Video
+                        {{ form.video(id="video_upload", class="d-none", onchange="updateFileName(this, 'vid-label')") }}
+                    </label>
+                </div>
+
+                {{ form.submit(class='btn btn-primary px-4 rounded-pill fw-bold') }}
+            </div>
+            
+            <div class="mt-2">
+                <small id="img-label" class="text-muted d-block"></small>
+                <small id="vid-label" class="text-muted d-block"></small>
+            </div>
+        </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-8">
+          {% with messages = get_flashed_messages() %} {% if messages %} {% for
+          message in messages %}
+          <div
+            class="alert alert-info border-0 shadow-sm rounded-3 alert-dismissible fade show"
+          >
+            {{ message }}
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+            ></button>
+          </div>
+          {% endfor %} {% endif %} {% endwith %}
+
+          <!--=======================================COMMENT========================================================= -->
+
+          {% for post in display.items %}
+  <div class="card border-0 shadow-sm rounded-4 mb-4 post-card transition-hover">
+    <div class="card-body p-4">
+      
+      <div class="d-flex align-items-center mb-3">
+        <img src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"
+             class="rounded-circle border me-3" width="48" height="48" style="object-fit: cover" />
+        <div>
+          <h6 class="m-0 fw-bold">{{ post.author.username }}</h6>
+          <small class="text-muted">{{ post.date.strftime('%b %d at %H:%M') }}</small>
+        </div>
+
+        {% if post.author == current_user %}
+        <div class="ms-auto dropdown">
+          <button class="btn btn-link text-muted p-0" data-bs-toggle="dropdown">
+            <i class="fas fa-ellipsis-v"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm rounded-3">
+            <li><a class="dropdown-item" href="{{ url_for('company.update_post', post_id=post.id) }}">
+              <i class="fas fa-pen me-2 small"></i>Edit</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item text-danger" href="{{ url_for('company.delete_post', post_id=post.id) }}">
+              <i class="fas fa-trash me-2 small"></i>Delete</a></li>
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+
+      <p class="card-text fs-5 text-dark lh-base mb-3">{{ post.content }}</p>
+
+      {% if post.image_file %}
+      <div class="post-media-container mb-3">
+        <img src="{{ url_for('static', filename='post_images/' + post.image_file) }}" 
+             class="img-fluid rounded-4 shadow-sm w-100" 
+             style="max-height: 500px; object-fit: cover;">
+      </div>
+      {% endif %}
+
+      {% if post.video_file %}
+      <div class="post-media-container mb-3">
+        <div class="ratio ratio-16x9">
+          <video controls class="rounded-4 bg-black shadow-sm" >
+            <source src="{{ url_for('static', filename='post_videos/' + post.video_file) }}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="d-flex justify-content-start gap-4 border-top pt-3 mt-3">
+        <a href="{{ url_for('company.like_post', post_id=post.id) }}"
+           class="text-decoration-none {{ 'text-danger' if current_user in post.likers else 'text-muted' }}">
+          <i class="{{ 'fas' if current_user in post.likers else 'far' }} fa-heart me-1"></i>
+          <span class="small fw-bold">{{ post.likers.count() }}</span>
+        </a>
+        <a href="#comments-{{ post.id }}" class="text-decoration-none text-muted" data-bs-toggle="collapse">
+          <i class="far fa-comment me-1"></i>
+          <span class="small fw-bold">{{ post.comments|length }}</span>
+        </a>
+      </div>
+
+      <div class="collapse pt-3" id="comments-{{ post.id }}">
+        <div class="bg-light rounded-4 p-3">
+          {% for comment in post.comments %}
+            <div class="mb-2">
+              <img src="{{ url_for('static', filename='profile_pics/' + comment.author.image_file) }}"
+             class="rounded-circle me-2 border shadow-sm" 
+             width="32" height="32" 
+             style="object-fit: cover; flex-shrink: 0;" />
+                <span class="small fw-bold text-primary">{{ comment.author.username }}:</span> 
+                <span class="small text-muted">{{ comment.body }}</span>
+            </div>
+          {% endfor %}
+
+          <form action="{{ url_for('company.add_comment', post_id=post.id) }}" method="POST" class="mt-2">
+            <div class="input-group input-group-sm">
+              <input type="text" name="comment_body" class="form-control border-0 rounded-start-pill px-3" 
+                     placeholder="Write a comment..." required>
+              <button class="btn btn-primary rounded-end-pill px-3" type="submit">Post</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div> </div> {% endfor %}
+    <!--========================================== page navigation TO BE CORRECTED ================================================-->
+
+    <div
+      class="d-flex justify-content-center align-items-center mt-5 mb-5 gap-3"
+    >
+      <nav aria-label="Page navigation">
+        <ul class="pagination pagination-custom gap-2 mb-0"></ul>
+      </nav>
+
+      <div class="dropdown">
+        <button
+          class="btn btn-outline-secondary rounded-pill px-3 shadow-sm dropdown-toggle small fw-bold"
+          type="button"
+          id="jumpToPage"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Go to...
+        </button>
+        <ul
+          class="dropdown-menu shadow-lg border-0 rounded-3 mt-2"
+          aria-labelledby="jumpToPage"
+          style="max-height: 200px; overflow-y: auto"
+        >
+          <li class="dropdown-header text-uppercase x-small fw-bold">
+            Select Page
+          </li>
+          {% for p in range(1, display.pages + 1) %}
+          <li>
+            <a
+              class="dropdown-item small {{ 'active' if display.page == p else '' }}"
+              href="{{ url_for('company.dashboard', page=p, search=search) }}"
+            >
+              Page {{ p }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <!--========================================== page navigation end================================================-->
+
+    {% endblock %}
+
+    <!-- footer for nav bar -->
+
+    <footer class="footer mt-auto pt-5 pb-4 border-top">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-4 text-center text-md-start mb-4 mb-md-0">
+            <a
+              class="navbar-brand d-flex align-items-center justify-content-center justify-content-md-start mb-2"
+              href="{{ url_for('company.dashboard') }}"
+            >
+              <div class="logo-wrapper me-2">
+                <div class="dot dot-1"></div>
+                <div class="dot dot-2"></div>
+                <div class="line"></div>
+              </div>
+              <span class="brand-text fw-bold" style="font-size: 1.2rem"
+                >KNOT</span
+              >
+            </a>
+            <p class="text-muted small mb-0">
+              Building community with every post.
+            </p>
+          </div>
+
+          <div class="col-md-4 text-center mb-4 mb-md-0">
+            <div class="d-flex justify-content-center gap-3">
+              <a
+                href="{{ url_for('company.login') }}"
+                class="text-muted text-decoration-none small hover-primary"
+                >Login</a
+              >
+              <a
+                href="{{ url_for('company.signup') }}"
+                class="text-muted text-decoration-none small hover-primary"
+                >Sign Up</a
+              >
+              <a
+                href="#"
+                class="text-muted text-decoration-none small hover-primary"
+                >Contact</a
+              >
+              <div class="vr mx-2 opacity-25"></div>
+              <button
+                class="btn btn-link text-muted p-0 shadow-none border-0 align-baseline"
+                id="darkModeToggle"
+                type="button"
+              >
+                <i class="fas fa-moon" id="theme-icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="col-md-4 text-center text-md-end">
+            <div class="social-icons">
+              <a
+                href="https://web.facebook.com/oluwatosin.omosule"
+                target="_blank"
+                class="btn btn-light btn-sm rounded-circle me-2 shadow-sm"
+                aria-label="Facebook"
+              >
+                <i class="fab fa-facebook-f text-primary"></i>
+              </a>
+              <a
+                href="https://www.twitter.com"
+                target="_blank"
+                class="btn btn-light btn-sm rounded-circle me-2 shadow-sm"
+                aria-label="Twitter"
+              >
+                <i class="fab fa-twitter text-info"></i>
+              </a>
+              <a
+                href="https://www.instagram.com"
+                target="_blank"
+                class="btn btn-light btn-sm rounded-circle shadow-sm"
+                aria-label="Instagram"
+              >
+                <i class="fab fa-instagram text-danger"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-4 opacity-25" />
+
+        <div
+          class="d-flex flex-column flex-md-row justify-content-between align-items-center small text-muted"
+        >
+          <span class="mb-2 mb-md-0"
+            >&copy; 2026 <strong>KNOT</strong> by Omosule. All rights
+            reserved.</span
+          >
+          <div class="d-flex align-items-center">
+            <span
+              >Made with <i class="fas fa-heart text-danger mx-1"></i> using
+              Flask</span
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-..."
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const htmlElement = document.documentElement;
+      const themeToggle = document.getElementById("darkModeToggle");
+      const themeIcon = document.getElementById("theme-icon");
+
+      // 1. Check for saved theme in localStorage
+      const currentTheme = localStorage.getItem("theme") || "light";
+      htmlElement.setAttribute("data-bs-theme", currentTheme);
+      updateIcon(currentTheme);
+
+      themeToggle.addEventListener("click", () => {
+        // 2. Toggle between light and dark
+        let theme = htmlElement.getAttribute("data-bs-theme");
+        let newTheme = theme === "light" ? "dark" : "light";
+
+        htmlElement.setAttribute("data-bs-theme", newTheme);
+        localStorage.setItem("theme", newTheme); // 3. Save preference
+        updateIcon(newTheme);
+      });
+
+      function updateIcon(theme) {
+        if (theme === "dark") {
+          themeIcon.classList.replace("fa-moon", "fa-sun");
+          themeIcon.classList.add("text-warning");
+        } else {
+          themeIcon.classList.replace("fa-sun", "fa-moon");
+          themeIcon.classList.remove("text-warning");
+        }
+      }
+    </script>
+  </body>
+</html>

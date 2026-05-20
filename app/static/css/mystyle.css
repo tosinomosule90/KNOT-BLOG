@@ -1,0 +1,493 @@
+/* Ticker Animation */
+.ticker-wrapper {
+    overflow: hidden; /* Crucial: hides the text outside the container */
+    display: flex;
+    align-items: center;
+}
+
+.animate-ticker {
+    display: inline-flex; /* Use flex for better alignment of items */
+    white-space: nowrap;
+    animation: ticker 30s linear infinite;
+}
+
+/* Pause on hover so people can actually read the posts! */
+.animate-ticker:hover {
+    animation-play-state: paused;
+    cursor: pointer;
+}
+
+@keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } /* Only move halfway because we will duplicate the content */
+}
+/* Modern Rounded UI */
+.rounded-4 { border-radius: 1.25rem !important; }
+.rounded-3 { border-radius: 0.75rem !important; }
+
+.post-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.1) !important;
+}
+
+/* Custom background for the app */
+body {
+    background-color: #f0f2f5;
+    font-family: 'Inter', -apple-system, sans-serif;
+}
+
+/*============================== pagination=================================== */
+/* Custom Pagination Styling */
+.pagination-custom .page-item .page-link {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--card-bg); /* Adapts to Dark Mode */
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+/* Active Page State */
+.pagination-custom .page-item.active .page-link {
+    background: linear-gradient(135deg, #0d6efd 0%, #0043a8 100%) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3) !important;
+    transform: scale(1.1);
+}
+
+/* Hover State */
+.pagination-custom .page-item:not(.active):not(.disabled) .page-link:hover {
+    background-color: var(--logo-primary);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Disabled State */
+.pagination-custom .page-item.disabled .page-link {
+    background-color: transparent;
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ===========NEW PAGINATION============================== */
+
+/* Jump to Page Styling */
+.dropdown-menu {
+    background-color: var(--card-bg);
+    min-width: 120px;
+}
+
+.dropdown-item {
+    color: var(--text-color);
+    padding: 8px 16px;
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: var(--input-bg);
+    color: var(--logo-primary);
+}
+
+.dropdown-item.active {
+    background-color: var(--logo-primary) !important;
+    color: white !important;
+}
+
+/* Custom Scrollbar for the dropdown */
+.dropdown-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+[data-bs-theme="dark"] .dropdown-menu::-webkit-scrollbar-thumb {
+    background: #444;
+}
+
+/* ================================================================================= */
+
+
+/* Profile Page Custom Styles */
+.card.rounded-4 {
+    border-radius: 1.5rem !important;
+}
+
+.profile-cover {
+    background-size: cover;
+    background-position: center;
+}
+
+/* Add a subtle hover effect to the profile card */
+.card-body {
+    transition: transform 0.3s ease;
+}
+
+/* Style for the 'Online' status indicator */
+.bg-success {
+    background-color: #28a745 !important;
+}
+
+/* Refined typography for the stats */
+.text-uppercase {
+    font-size: 0.7rem;
+}
+
+
+/* Styling for the Update Post Page */
+.bg-light-primary {
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+.form-control-lg:focus {
+    background-color: #fff !important;
+    border: 1px solid #0d6efd !important;
+    box-shadow: 0 0 0 0.25 rbg(13 110 253 / 10%) !important;
+}
+
+/* Make the textarea feel like a real writing space */
+textarea.form-control {
+    resize: none;
+    line-height: 1.6;
+}
+
+.btn-lg {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+}
+
+
+/* Update Account Enhancements */
+.x-small {
+    font-size: 0.75rem;
+}
+
+.input-group-text {
+    border-top-left-radius: 12px !important;
+    border-bottom-left-radius: 12px !important;
+}
+
+.form-control {
+    border-radius: 12px !important;
+}
+
+/* Subtle focus effect for borderless inputs */
+.form-control:focus {
+    background-color: #f8f9fa !important;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15) !important;
+    color: #212529 !important;
+}
+
+.btn-primary.rounded-pill {
+    transition: all 0.3s ease;
+}
+
+.btn-primary.rounded-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(13, 110, 253, 0.25) !important;
+}
+
+
+/* 1. Define Light Mode (Default) */
+:root {
+    --bg-color: #f8f9fa;
+    --card-bg: #ffffff;
+    --text-color: #212529;
+    --border-color: #dee2e6;
+    --input-bg: #f1f3f5;
+}
+
+/* 2. Define Dark Mode Overrides */
+[data-bs-theme="dark"] {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --border-color: #333333;
+    --input-bg: #2c2c2c;
+}
+
+/* 3. Apply Variables to Elements */
+body {
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.card {
+    background-color: var(--card-bg) !important;
+    border-color: var(--border-color) !important;
+}
+
+.form-control, .input-group-text {
+    background-color: var(--input-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+/* Ensure headings stay readable */
+h1, h2, h3, h4, h5, h6, p, small {
+    color: var(--text-color) !important;
+}
+
+
+
+/* Login Page Specifics */
+.input-group-text {
+    border-top-left-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+}
+
+.form-control {
+    border-top-right-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+}
+
+/* Ensure the background covers the full viewport */
+body {
+    background: var(--bg-color);
+}
+
+/* Hover effect for the Google button */
+.btn-outline-dark:hover {
+    background-color: #f8f9fa;
+    color: #000;
+    border-color: #ddd;
+}
+
+
+/* Footer Remodel Styles */
+.footer {
+    background-color: var(--card-bg); /* Uses the theme variable we set earlier */
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effects for text links */
+.hover-primary:hover {
+    color: var(--logo-primary) !important;
+}
+
+/* Social icon button styling */
+.social-icons .btn-light {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.social-icons .btn-light:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+    background-color: #fff;
+}
+
+/* Dark mode specific override for social buttons */
+[data-bs-theme="dark"] .social-icons .btn-light {
+    background-color: #2c2c2c;
+    color: #fff;
+}
+
+
+/* Sidebar Specific Styling */
+.offcanvas {
+    background-color: var(--card-bg); /* Adapts to Dark Mode */
+    color: var(--text-color);
+}
+
+.offcanvas-body .list-group-item {
+    background-color: transparent;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.offcanvas-body .list-group-item:hover {
+    background-color: var(--input-bg);
+    padding-left: 2rem; /* Subtle sliding effect on hover */
+    color: var(--logo-primary);
+}
+
+.offcanvas-header {
+    background: linear-gradient(135deg, #0d6efd 0%, #0043a8 100%) !important;
+}
+
+/* Ensure the x-small utility from before is available */
+.x-small { font-size: 0.75rem; }
+
+/* ========================================LOGO STYLING======================================== */
+:root {
+    --logo-primary: #0d6efd; /* Brand Blue */
+    --logo-secondary: #00d2ff;
+}
+
+[data-bs-theme="dark"] {
+    --logo-primary: #3d8bfd;
+    --logo-secondary: #63e6be;
+}
+
+.logo-wrapper {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* The two "Dots" being connected */
+.dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    z-index: 2;
+}
+
+.dot-1 {
+    background: var(--logo-primary);
+    top: 5px;
+    left: 5px;
+    box-shadow: 0 0 10px rgba(13, 110, 253, 0.4);
+}
+
+.dot-2 {
+    background: var(--logo-secondary);
+    bottom: 5px;
+    right: 5px;
+}
+
+/* The "Knot" connection line */
+.line {
+    position: absolute;
+    width: 2px;
+    height: 24px;
+    background: linear-gradient(to bottom, var(--logo-primary), var(--logo-secondary));
+    transform: rotate(-45deg);
+    border-radius: 5px;
+}
+
+/* Add a subtle "interlock" look */
+.logo-wrapper::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--logo-primary);
+    border-radius: 4px;
+    transform: rotate(45deg);
+    opacity: 0.2;
+}
+
+.brand-text {
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    background: linear-gradient(45deg, var(--logo-primary), var(--logo-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'Inter', sans-serif; /* Or any clean sans-serif */
+}
+
+/* User Card Styling */
+.user-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: var(--card-bg);
+}
+
+.user-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+}
+
+/* Status Dot Indicator */
+.bg-success {
+    background-color: #28a745 !important;
+}
+
+/* Responsive Image Handling */
+.user-card img {
+    transition: transform 0.5s ease;
+}
+
+.user-card:hover img {
+    transform: scale(1.05);
+}
+
+/* Small Utility */
+.x-small {
+    font-size: 0.65rem;
+    letter-spacing: 0.5px;
+}
+
+
+
+.hover-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
+}
+
+.border-dashed {
+    border: 2px dashed #dee2e6 !important;
+}
+
+.btn-light {
+    background-color: var(--input-bg);
+    transition: all 0.2s ease;
+}
+
+.btn-light:hover {
+    background-color: #e9ecef;
+    border-color: var(--logo-primary) !important;
+}
+
+/* Hide the actual ugly file inputs */
+input[type="file"] {
+    display: none;
+}
+
+.post-media-container video:focus {
+    outline: none;
+}
+
+/* Adds a nice subtle zoom effect if you hover over the image */
+.post-media-container img {
+    transition: transform 0.4s ease;
+}
+
+.post-media-container:hover img {
+    transform: scale(1.01);
+}
+
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.border-dashed {
+    border-style: dashed !important;
+}
+
+.hover-bg-light-primary:hover {
+    background-color: #f0f7ff !important; /* A light blue tint */
+    border-color: #0d6efd !important; /* Bootstrap primary color */
+    transform: translateY(-2px);
+}
+
+.transition-all {
+    transition: all 0.2s ease-in-out;
+}

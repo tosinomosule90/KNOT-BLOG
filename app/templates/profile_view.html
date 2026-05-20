@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
+                <div class="card-body p-4 p-md-5">
+                    <div class="row align-items-center">
+                        <div class="col-md-4 text-center mb-4 mb-md-0">
+                            <img src="{{ image_file }}" alt="{{ user.username }}" 
+                                 class="rounded-circle border border-4 border-light shadow" 
+                                 style="width: 180px; height: 180px; object-fit: cover;">
+                        </div>
+                        
+                        <div class="col-md-8 text-center text-md-start">
+                            <div class="d-flex flex-column flex-md-row align-items-center gap-3 mb-3">
+                                <h1 class="fw-bold mb-0 text-dark">{{ user.username }}</h1>
+                                
+                                {% if current_user.id == user.id %}
+                                    <a href="{{ url_for('company.account') }}" class="btn btn-outline-primary btn-sm rounded-pill px-4">
+                                        <i class="fas fa-cog me-1"></i> Settings
+                                    </a>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-4">
+                                <p class="text-muted mb-1">
+                                    <i class="far fa-envelope me-2 text-primary"></i>{{ user.email }}
+                                </p>
+                                <p class="text-muted small">
+                                    <i class="far fa-calendar-alt me-2 text-primary"></i>Member since 2026
+                                </p>
+                            </div>
+
+                            <div class="p-3 bg-light rounded-3 d-inline-block">
+                                <span class="fw-bold text-dark">{{ posts|length }}</span> 
+                                <span class="text-muted small text-uppercase ms-1">Total Posts Published</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center mb-4">
+                <h4 class="fw-bold mb-0">Recent Activity</h4>
+                <div class="flex-grow-1 ms-3 border-bottom opacity-25"></div>
+            </div>
+
+            <div class="row">
+                {% for post in posts %}
+                    <div class="col-12 mb-4">
+                        <div class="card border-0 shadow-sm rounded-4 p-4 hover-lift">
+                             <div class="d-flex justify-content-between mb-2">
+                                 <small class="text-primary fw-bold text-uppercase" style="letter-spacing: 1px;">Post</small>
+                                 <small class="text-muted">{{ moment(post.date).fromNow() }}</small>
+                             </div>
+                             <p class="card-text fs-5 text-dark">{{ post.content }}</p>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12 text-center py-5 bg-light rounded-4 border border-dashed">
+                        <i class="fas fa-feather fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">No public activity found for this user yet.</p>
+                    </div>
+                {% endfor %}
+                <a href="{{ url_for('company.community') }}" class="btn btn-outline-primary btn-sm rounded-pill px-4">
+                    <i class="fas fa-arrow-left me-1"></i> Back
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
