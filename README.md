@@ -104,8 +104,7 @@ Profile Avatars: app/static/profile_pics/
 Feed Uploads (Images): app/static/post_images/
 
 Feed Uploads (Videos): app/static/post_videos/
-
-## Notes
+<img width="259" height="579" alt="Annotation 2026-05-20 135156" src="https://github.com/user-attachments/assets/5d62addf-fcc5-49e4-b622-0b9d90345ab9" />
 
 - The database is created automatically when you run `app.py`
 - Uploaded profile pictures are stored in `app/static/profile_pics/`
